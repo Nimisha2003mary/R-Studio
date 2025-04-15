@@ -1,0 +1,300 @@
+---
+title: "gss_cat"
+author: "NIMISHA MARY SAM"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+#chi- square for the goodness of fit
+> 
+> library(tidyverse)
+> library(forcats)
+> view(gss_cat)
+> #chi-square for marital
+> 
+> my_data <- gss_cat %>%
++   select (marital)%>%
++   filter (marital %in% c("Married",
++                          "Never married",
++                          "Separated",
++                          "No answer",
++                          "Widowed",
++                          "Divorced")) %>%
++   mutate (marital = fct_drop(marital))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> 
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 19558, df = 5, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 19558, df = 5, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(marital)) + geom_bar()
+> #chi-square for race
+> 
+> my_data <-gss_cat %>%
++   select (race) %>%
++   filter(race %in% c("Black",
++                       "White",
++                       "Other")) %>%
++ mutate (race = fct_drop(race))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 17956, df = 2, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 17956, df = 2, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(race)) + geom_bar()
+> #chi-square for rincome
+> 
+> my_data <-gss_cat %>%
++   select (rincome) %>%
++   filter(rincome %in% c("$1000-2999",
++                      "$5000-5999",
++                      "$15000-19999",
++                      "$10000-14999",
++                      "Refused",
++                      "Not applicable",
++                      "$25000 or more",
++                      "Don't know",
++                      "$8000- 9999",
++                      "$20000-24999",
++                      "$7000-7999",
++                      "$3000-3999",
++                      "Lt $ 1000",
++                      "No answer")) %>%
++   mutate (rincome = fct_drop(rincome))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 17292, df = 4, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 17292, df = 4, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(rincome)) + geom_bar()
+> #chi-square for partyid
+> 
+> my_data <-gss_cat %>%
++   select (partyid) %>%
++   filter(partyid %in% c("Ind,near rep",
++                         "Not str republican",
++                         "Independent",
++                         "Strong democrat",
++                         "Other party",
++                         "Not str democrat",
++                         "Strong republican",
++                         "Ind,near dem",
++                         "No answer")) %>%
++   mutate (partyid = fct_drop(partyid))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 6563.2, df = 8, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 6563.2, df = 8, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(partyid)) + geom_bar()
+> #chi-square for relig
+> 
+> my_data <-gss_cat %>%
++   select (relig) %>%
++   filter(relig %in% c("Other",
++                         "None",
++                         "Christian",
++                         "Native american",
++                         "Protestant",
++                         "Catholic",
++                         "Jewish",
++                         "Inter-nondenominational",
++                       "Don't know",
++                       "Orthodox-christian",
++                       "Buddhism",
++                       "Moslem/islam",
++                       "Other eastern",
++                       "Hinduism",
++                         "No answer")) %>%
++   mutate (relig = fct_drop(relig))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 88171, df = 14, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 88171, df = 14, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(relig)) + geom_bar()
+> #chi-square for denom
+> 
+> my_data <-gss_cat %>%
++   select (denom) %>%
++   filter(denom %in% c("No denomination",
++                       "United methodist",
++                       "No answer",
++                       "Other",
++                       "Episcopal",
++                       "Presbyterian-dk wh",
++                       "Presbyterian, merged",
++                       "Other presbyterian",
++                       "United pres ch in us",
++                       "Lutheran-dk which",
++                       "Evangelical luth",
++                       "Other lutheran",
++                       "Wi evan luth synod",
++                       "Lutheran-mo synod",
++                       "Luth ch in america",
++                       "Am lutheran",
++                       "Methodist-dk which",
++                       "Other methodist",
++                       "United methodist",
++                       "Afr meth ep zion",
++                       "Afr meth episcopal",
++                       "Baptist-dk which",
++                       "Other baptists",
++                       "Southern baptist",
++                       "Nat bapt conv usa",
++                       "Nat bapt conv of am",
++                       "Am bapt ch in usa",
++                       "Am baptist asso",
++                       "Not applicable",
++                       "Presbyterian c in us")) %>%
++   mutate (denom = fct_drop(denom))
+> 
+> my_table<- table(my_data)
+> view(my_table)
+> 
+> #use chi_squared goodness of fit test
+> chisq.test(my_table)
+
+	Chi-squared test for given probabilities
+
+data:  my_table
+X-squared = 136802, df = 28, p-value < 2.2e-16
+
+> my_data %>%
++   table () %>%
++   chisq.test()
+
+	Chi-squared test for given probabilities
+
+data:  .
+X-squared = 136802, df = 28, p-value < 2.2e-16
+
+> 
+> #graphics
+> 
+> my_data %>%
++   ggplot(aes(denom)) + geom_bar()
+
+Note that the `echo = TRUE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
