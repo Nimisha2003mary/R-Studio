@@ -1,0 +1,185 @@
+---
+title: "CIA 3_rmd file"
+author: "NIMISHA MARY SAM"
+date: "`13-04-2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+install.packages("RMySQL")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("DBI")
+
+# Load the necessary libraries
+library(RMySQL)
+library(DBI)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Connect to MySQL database
+con <- dbConnect(RMySQL::MySQL(), dbname = "customers", 
+                 host = "localhost", 
+                 user = "root", 
+                 password = "17april2003nimisha")
+
+# Check connection
+if (!dbIsValid(con)) {
+  stop("Connection failed!")
+} else {
+  cat("Connected successfully to the database!\n")
+}
+
+# Fetch data from Vendors, Customers, Invoices, and Invoice_Items tables
+vendors_data <- dbGetQuery(con, "SELECT * FROM Vendors")
+customers_data <- dbGetQuery(con, "SELECT * FROM Customers")
+invoices_data <- dbGetQuery(con, "SELECT * FROM Invoices")
+invoice_items_data <- dbGetQuery(con, "SELECT * FROM Invoice_Items")
+
+# Perform basic summary analysis
+vendors_summary <- summary(vendors_data)
+customers_summary <- summary(customers_data)
+invoices_summary <- summary(invoices_data)
+invoice_items_summary <- summary(invoice_items_data)
+
+Vendors Summary:
+> print(vendors_summary)
+  vendor_id             name              email           phone_number      
+ Length:12          Length:12          Length:12          Length:12         
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+   address         
+ Length:12         
+ Class :character  
+ Mode  :character  
+> 
+> cat("\nCustomers Summary:\n")
+
+Customers Summary:
+> print(customers_summary)
+ customer_id            name              email           phone_number      
+ Length:8           Length:8           Length:8           Length:8          
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+ billing_address   
+ Length:8          
+ Class :character  
+ Mode  :character  
+> 
+> cat("\nInvoices Summary:\n")
+
+Invoices Summary:
+> print(invoices_summary)
+  invoice_id          category          linked_id         template_type     
+ Length:6           Length:6           Length:6           Length:6          
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+ date_issued          due_date            status           total_amount 
+ Length:6           Length:6           Length:6           Min.   : 680  
+ Class :character   Class :character   Class :character   1st Qu.: 785  
+ Mode  :character   Mode  :character   Mode  :character   Median :1070  
+                                                          Mean   :1065  
+                                                          3rd Qu.:1302  
+                                                          Max.   :1500  
+ payment_terms     
+ Length:6          
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   
+> 
+> cat("\nInvoice Items Summary:\n")
+
+Invoice Items Summary:
+> print(invoice_items_summary)
+    item_id   invoice_id         item_name            quantity 
+ Min.   :1   Length:9           Length:9           Min.   : 4  
+ 1st Qu.:3   Class :character   Class :character   1st Qu.: 5  
+ Median :5   Mode  :character   Mode  :character   Median : 6  
+ Mean   :5                                         Mean   : 7  
+ 3rd Qu.:7                                         3rd Qu.: 8  
+ Max.   :9                                         Max.   :15  
+   unit_price     total_price  
+ Min.   : 50.0   Min.   : 400  
+ 1st Qu.: 75.0   1st Qu.: 500  
+ Median :120.0   Median : 680  
+ Mean   :118.6   Mean   : 710  
+ 3rd Qu.:150.0   3rd Qu.: 750  
+ Max.   :250.0   Max.   :1500  
+
+
+# View summaries
+cat("\nVendors Summary:\n")
+print(vendors_summary)
+
+cat("\nCustomers Summary:\n")
+print(customers_summary)
+
+cat("\nInvoices Summary:\n")
+print(invoices_summary)
+
+cat("\nInvoice Items Summary:\n")
+print(invoice_items_summary)
+
+# Basic Descriptive Analytics and Visualization
+
+# Example: Create a bar chart for invoice statuses
+invoice_status_count <- invoices_data %>%
+  group_by(status) %>%
+  summarise(count = n())
+
+ggplot(invoice_status_count, aes(x = status, y = count, fill = status)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  ggtitle("Invoice Status Distribution") +
+  xlab("Status") +
+  ylab("Count of Invoices")
+  
+  http://127.0.0.1:38903/graphics/b7ee39ae-4902-4faa-8a01-9134740d6bf1.png
+
+
+# Example: Create a scatter plot of total_amount vs. due_date
+ggplot(invoices_data, aes(x = as.Date(due_date), y = total_amount)) +
+  geom_point(color = 'blue', size = 2) +
+  geom_smooth(method = 'lm', color = 'red') +
+  theme_minimal() +
+  ggtitle("Total Amount vs. Due Date") +
+  xlab("Due Date") +
+  ylab("Total Amount")
+  
+  http://127.0.0.1:38903/graphics/beee8c76-50e4-4242-9076-a956ee8b33a8.png
+
+# Example: Create a pie chart for vendor distribution
+vendor_distribution <- vendors_data %>%
+  group_by(name) %>%
+  summarise(count = n())
+
+ggplot(vendor_distribution, aes(x = "", y = count, fill = name)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  theme_minimal() +
+  ggtitle("Vendor Distribution")
+  
+  http://127.0.0.1:38903/graphics/beee8c76-50e4-4242-9076-a956ee8b33a8.png
+
+# Disconnect from the database
+dbDisconnect(con)
+
+
+
+
